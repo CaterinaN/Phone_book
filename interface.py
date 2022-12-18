@@ -22,7 +22,7 @@ main_menu = \
 
 def show_contacts(data):  # 1 in menu
     if data != []:
-        print('\033[4mСписок контактов:\033[0m')
+        print('Список контактов:')
         for item in range(len(data)):
             a = data[item]['contact_id']
             b = data[item]['surname']
@@ -33,6 +33,14 @@ def show_contacts(data):  # 1 in menu
         print(50 * "•")
     else:
         print('Список контактов пуст')
+
+def start_page():  # Starting page, choose number
+    print(main_menu)
+    print(50 * "═")
+    print()
+    command = input('Выберите действие:  ')
+    print(50 * "_")
+    return command
 
 
 def search_contact():
