@@ -1,91 +1,88 @@
 import interface
+import data_base
 import logger
+import import_file as iff
+import export_file
+
 
 def run():
+    '''Запуск и обработка главного меню'''
     
     while True:
     
         command = interface.start_page()
 
         match command:
-            case '1':     # Список всех контактов
-                data = database_module.get_all_contacts()
-                interface.show_contacts(data)
+            
+            case '1':
+                '''Пункт 1 поиск контакта'''
 
-            case '2': # Поиск контакта
                 user_search = interface.search_contact()
-                data = database_module.get_contact_info(user_search)
+                data = data_base.get_contact_info(user_search)
                 interface.show_contacts(data)
             
             
-            case '3': # Добавить контакт
+            case '2':
+                '''Пункт 2 добавление контакта'''
 
                 new_contact = interface.add_contact()
-                database_module.add_contacts(new_contact)
+                data_base.add_contacts(new_contact)
                 logger.add(new_contact, 'added')
                 interface.done_message()
 
-            case '4': # Изменить дело
-                data = database_module.get_all_contacts()
+            case '3':
+                '''Пункт 3 изменение или удаление контакта'''
+
+                data = data_base.get_all_contacts()
                 interface.show_contacts(data)
                 deal_id = interface.change_contact()
-                one_contact = database_module.get_one_contact(deal_id)
+                one_contact = data_base.get_one_contact(deal_id)
                 changed_contact = interface.change_contact_content(one_contact)
                 if changed_contact['comment'] == 'Я что-то нажал и всё сломалось':
-                    database_module.delete_contact(changed_contact['contact_id'])
+                    data_base.delete_contact(changed_contact['contact_id'])
                     logger.add(changed_contact, 'deleted')
                 else:
-                    database_module.change_contact(changed_contact)
+                    data_base.change_contact(changed_contact)
                     logger.add(changed_contact, 'changed')
             
-            case '5': # Импорт
+            case '4':
+                '''Пункт 4 импорт контактов из файла'''
+
                 user_choice = interface.import_contacts()
-                if user_choice == 'csv':
+                if user_choice == '1':
                     data = iff.import_csv('import_phonebook.csv')
-                    database_module.add_contacts(data)
+                    data_base.add_contacts(data)
                     interface.result_mess(True)
+                    interface.result_import('import_phonebook.csv')
                     logger.add(data, 'imported')
-                elif user_choice == 'json':
+                elif user_choice == '2':
                     data = iff.import_json('import_phonebook.json')
-                    database_module.add_contacts(data)
+                    data_base.add_contacts(data)
                     interface.result_mess(True)
+                    interface.result_import('import_phonebook.json')
                     logger.add(data, 'imported')
                 else:
                     interface.error_input()
                 
                 
             
-            case '6': # Экспорт
-                export_to_file.export_csv()
-                # user_choice = interface.export_contacts()
-                # if user_choice == 'csv':
-                #     data = export_to_file.export_csv()
+            case '5':
+                '''Пункт 5 экспорт котактов в файл'''
+                
+                export_file.export_csv()
+                
+            case '6':
+                '''Пункт 6 вывод в консоль всего списка контактов'''
 
-                #     interface.result_mess(True)
-                #     #logger.add(data, 'exported')
-                # elif user_choice == 'json':
-                #     #data = export_to_file.export_json()
-                    
-                #     interface.result_mess(False)
-                #     #logger.add(data, 'exported')
-                # else:
-                #     interface.error_input()
+                data = data_base.get_all_contacts()
+                interface.show_contacts(data)
+            
+            case '7':
+                '''Пункт 7 выход из программы'''
 
-            case '7': # Выход
                 interface.bye_mess()
                 break
             
             case _:
                 interface.error_input()
 
-
-def change_action(user_answer: dict):
-    match user_answer['user_choise']:
-        case 1: # завершить дело
-            return
-        
-        case 2: # изменить дело
-            return
-
-        case 3: # удалить дело
-            return
