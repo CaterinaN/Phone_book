@@ -2,9 +2,14 @@ from database_module import get_all_contacts
 import csv
 
 def export_csv():
-    temp = get_all_contacts() # Возвращает весь справочник из рабочего файла
+    '''экспортируем данныe из базы данных в отдельный файл в формате csv'''
+    temp = get_all_contacts()
+    '''Возвращает весь справочник из базы данных'''
+     
 
-    file_csv = "bd_csv_export.csv" # задали имя файлу в который выгружаем
+    file_csv = "bd_csv_export.csv" 
+    '''создали путь и туда будем выгружать'''
+   
 
     with open(file_csv,"w", encoding='UTF-8', newline="") as file: 
         colone = temp[0].keys()
