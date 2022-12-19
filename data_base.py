@@ -23,7 +23,7 @@ def get_one_contact(contact_id_get):
     return one_contact_get
 
 def get_contact_info(contact_info_get):
-    ''' Возвращает контакты по поиску в любом из ключей surname, name, phone, comment '''
+    ''' Возвращает контакты по поиску в любом из ключей surname, name, comment '''
 
     with open(path_to_db, 'r', encoding='UTF-8') as file: # Читаем данные из базы. 
         data = json.load(file)
@@ -34,8 +34,8 @@ def get_contact_info(contact_info_get):
                 info_contact_get.append(data[i])
             elif contact_info_get.lower() in data[i]['name'].lower():
                 info_contact_get.append(data[i])
-            elif contact_info_get.lower() in data[i]['phone'].lower():
-                info_contact_get.append(data[i])
+            # elif contact_info_get.lower() in data[i]['phone'].lower():
+            #     info_contact_get.append(data[i])
             elif contact_info_get.lower() in data[i]['comment'].lower():
                 info_contact_get.append(data[i])
  
